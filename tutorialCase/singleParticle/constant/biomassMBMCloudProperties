@@ -1,0 +1,211 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.1.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      bioCloudProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solution
+{
+    active          true;
+    transient       yes;
+    coupled         true;
+    cellValueSourceCorrection on;
+
+    sourceTerms
+    {
+        schemes
+        {
+            rho             semiImplicit 1;
+            U               semiImplicit 1;
+            Yi              semiImplicit 1;
+            h               semiImplicit 1;
+            radiation       semiImplicit 1;
+        }
+    }
+
+    interpolationSchemes
+    {
+        rho             cell;
+        U               cellPoint;
+        thermo:mu       cell;
+        T               cell;
+        Cp              cell;
+        kappa           cell;
+        p               cell;
+        G               cell;
+        alpha           cell;
+    }
+
+    integrationSchemes
+    {
+        U               Euler;
+        T               analytical;
+    }
+}
+
+constantProperties
+{
+
+    rho0            1030;// add
+    T0              1050;// add
+    Cp0             1500;// add
+    epsilon0        0.85;//particle emissivity []
+    f0              0.5;
+
+    deltaTime 1e-4;
+
+//     hCoeff 58;
+
+
+}
+
+subModels
+{
+    particleForces
+    {
+//         ErgunWenYuDrag
+//         {
+//             alphac alpha;
+//         }
+//         gravity;
+    }
+
+    injectionModels
+    {
+        model1
+        {
+            type            manualInjection;
+            massTotal       0;
+            parcelBasisType fixed;
+            nParticle       1;
+            SOI             0;
+            positionsFile   "bioCloudPositions";
+            U0              (0 0 0);
+            sizeDistribution
+            {
+                type        fixedValue;
+                fixedValueDistribution
+                {
+                    value   0.0061854;
+                }
+            }
+        }
+    }
+
+    dispersionModel none; // add
+
+    patchInteractionModel localInteraction;
+
+    localInteractionCoeffs
+    {
+       patches
+       (
+          walls
+          {
+                type rebound;
+                e    0.97;
+                mu   0.09;
+          }
+          top
+          {
+                type rebound;
+                e    0.97;
+                mu   0.09;
+          }
+         bottom
+          {
+                type rebound;
+                e    0.97;
+                mu   0.09;
+	      }
+       );
+    }
+
+
+    stochasticCollisionModel none;
+
+    heatTransferModel none;//RanzMarshall;
+
+    compositionModel singleMixtureFraction;
+
+    phaseChangeModel none;//liquidEvaporation;
+
+    devolatilisationModel none;
+
+    surfaceReactionModel none;
+
+    pyrolysisModel none;//DiBlasiPyrolysis; //add
+
+    charOxidizationModel none;//COxidationKineticDiffusionLimitedRateWithAshSteam; //add
+
+    surfaceFilmModel none;
+
+    radiation       off;
+
+
+    RanzMarshallCoeffs
+    {
+        BirdCorrection  false;
+    }
+
+    singleMixtureFractionCoeffs
+    {
+        phases
+        (
+            gas // number doesn't mean any thing
+            {
+                CH4             0.1;
+                H2              0.1;
+                CO2             0.1;
+                CO              0.1;
+                H2O             0.1;
+                tar             0.5;
+            }
+            liquid
+            {
+                H2O             1.0;
+            }
+            solid
+            {
+                wood             0.9634; //name must be the wood, consume with H2O
+                activeDryWood    0.0; // dry wood can devo
+                C                0.0;  //name must be the C
+                ash              0.0366;
+            }
+        );
+        YGasTot0        0.0;
+        YLiquidTot0     0.098;
+        YSolidTot0      0.902;
+    }
+
+    liquidEvaporationCoeffs
+    {
+        enthalpyTransfer enthalpyDifference;
+
+        activeLiquids
+        (
+            H2O
+        );
+    }
+
+
+}
+
+
+cloudFunctions
+{}
+
+
+
+// ************************************************************************* //

@@ -1,0 +1,20 @@
+/* Biomass parcel and sub-models */
+BIOMASSPARCEL=biomassParcel
+BIOMASSCLOUD=biomassCloud
+BIOMASSBASECLOUDS=$(BIOMASSCLOUD)/baseClasses
+
+DERIVEDPARCEL=$(BIOMASSPARCEL)/derived
+
+/* Cloud base classes */
+$(BIOMASSBASECLOUDS)/reactingMultiphaseMBMCloud/reactingMultiphaseMBMCloud.C
+
+/* reacting multiphase MBM parcel sub-models */
+REACTINGMPMPMPARCEL=$(DERIVEDPARCEL)/basicReactingMultiphaseMBMParcel
+$(REACTINGMPMPMPARCEL)/defineBasicReactingMultiphaseMBMParcel.C
+$(REACTINGMPMPMPARCEL)/makeBasicReactingMultiphaseMBMParcelSubmodels.C
+
+$(BIOMASSPARCEL)/include/makeBiomassMBMParcelSubmodels.C
+
+biomassCloudList/biomassMBMCloudList/biomassMBMCloudList.C
+
+LIB = $(FOAM_USER_LIBBIN)/libbiomassCombustion

@@ -1,0 +1,4 @@
+#!/bin/bash
+wmake -j biomassCombustion
+rm -rf biomassCombustion/lnInclude/err.h
+wmake -j biomassMBMChemistryFoam

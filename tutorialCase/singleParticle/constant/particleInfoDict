@@ -1,0 +1,66 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  7
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      particleInfoDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+meshInput
+{
+  VERBOSITY 0;
+  SAVE_EVERY 10000;
+  TIME_DT 1e-04;
+  MOISTURE_FRACTION_DB 0.666667;
+  PARTICLE_RADIUS 4.75E-03;
+  DRYING_SHRINKAGE_VOLUME 0.127;
+  T_RADIATION 1276.0;
+  T_REACTOR 1050.0;
+  T_P_INIT 300.0;
+  MASS_FRAC_O2 0.23;
+  DENSITY_INITIAL 844.0; // poplar wood
+  FINE_PARTICLE_MESH 50;
+  FINE_PARTICLE_MESH_DOUBLE 50.0;
+  K_P_WET 0.26;
+  K_P_DRY 0.12;
+  K_P_CHAR 0.1;
+  ASH_MASS_FRACTION 0.02;
+  //daf in raw biomss the C H O ratios are from Neves review paper 2011 PECS
+  //(poplar wood), char is only C.
+  C_FRACTION 0.4941;
+  H_FRACTION 0.0609;
+  O_FRACTION 0.4353;
+  CHARCONVERSION_SHRINKAGE_VOLUME 0.95;
+  DEVOL_SHRINKAGE_VOLUME 0.28;
+  P_ATM 101325.0; /* (Pa) */
+  MASS_FRAC_H2O 0.0;
+  MASS_FRAC_H2 0.0;
+  MASS_FRAC_CO2 0.0;
+  MY_MAXIMUM_NEWTON_ITER 500;
+  N_SPECIES 12;
+}
+
+// single component kinetic ratio
+sigKin
+{
+  DevKinA1 1.10e+11; /* (s-1) */
+  DevKinE1 1.77e+05; /* (J/mol) */
+  DevKinA2 9.28e+09; /* (s-1) */
+  DevKinE2 1.49e+05; /* (J/mol) */
+  DevKinA3 3.05e+07; /* (s-1) */
+  DevKinE3 1.25e+05; /* (J/mol) */
+
+  DryKinA 5.13e+10;
+  DryKinE 88000.;
+}
+
+// ************************************************************************* //

@@ -1,0 +1,1 @@
+../src/SparseCore/SparseDiagonalProduct.h
